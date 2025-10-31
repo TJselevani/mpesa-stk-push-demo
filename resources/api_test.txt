@@ -1,0 +1,17 @@
+POST → http://localhost:8080/api/mpesa/stkpush
+
+{
+  "phoneNumber": "254712345678",
+  "accountReference": "TestAccount",
+  "description": "Payment for order #1234",
+  "amount": 1
+}
+
+Expected Response
+
+{
+  "merchantRequestId": "29115-34620561-1",
+  "checkoutRequestId": "ws_CO_DMZ_123456789_0102030405",
+  "responseDescription": "Success. Request accepted for processing",
+  "responseCode": "0"
+}
