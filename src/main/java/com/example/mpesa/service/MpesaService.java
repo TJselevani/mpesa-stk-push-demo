@@ -3,24 +3,34 @@ package com.example.mpesa.service;
 import com.example.mpesa.config.MpesaConfig;
 import com.example.mpesa.dto.StkPushRequest;
 import com.example.mpesa.dto.StkPushResponse;
-import com.example.mpesa.util.HttpUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
+@Slf4j
 @Service
 public class MpesaService {
+
     @Autowired
     private MpesaConfig config;
 
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static final String STK_PUSH_ENDPOINT = "/mpesa/stkpush/v1/processrequest";
+
     public StkPushResponse initiateStkPush(StkPushRequest req) {
+        long start = System.currentTimeMillis();
         try {
             String timestamp = DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
             String password = Base64.getEncoder().encodeToString(
@@ -40,18 +50,37 @@ public class MpesaService {
             body.put("AccountReference", req.getAccountReference());
             body.put("TransactionDesc", req.getDescription());
 
-            String response = HttpUtil.post(config.getBaseUrl() + "/mpesa/stkpush/v1/processrequest",
-                    "Authorization", "Bearer " + tokenService.getAccessToken(), body.toString());
+            String accessToken = tokenService.getAccessToken();
 
+            var headers = new org.springframework.http.HttpHeaders();
+            headers.add("Authorization", "Bearer " + accessToken);
+            headers.add("Content-Type", "application/json");
+
+            var entity = new org.springframework.http.HttpEntity<>(body.toString(), headers);
+
+            String url = config.getBaseUrl() + STK_PUSH_ENDPOINT;
+            String response = restTemplate.postForObject(url, entity, String.class);
             JSONObject json = new JSONObject(response);
+
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("⚡ STK Push initiated in {} ms for phone {}", elapsed, req.getPhoneNumber());
+
             return new StkPushResponse(
                     json.optString("MerchantRequestID"),
                     json.optString("CheckoutRequestID"),
                     json.optString("ResponseDescription"),
                     json.optString("ResponseCode")
             );
+
         } catch (Exception e) {
+            log.error("❌ STK Push failed: {}", e.getMessage(), e);
             throw new RuntimeException("STK Push failed: " + e.getMessage(), e);
         }
+    }
+
+    @Async
+    public void initiateStkPushAsync(StkPushRequest req) {
+        log.info("🚀 Initiating STK Push async for {}", req.getPhoneNumber());
+        initiateStkPush(req);
     }
 }

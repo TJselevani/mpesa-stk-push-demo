@@ -16,6 +16,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
 
     public void handleCallback(StkCallback callback) {
+        long start = System.currentTimeMillis();
         var stk = callback.getBody().getStkCallback();
 
         log.info("Received callback: {}", stk.getResultDesc());
@@ -51,6 +52,8 @@ public class TransactionService {
 
             transactionRepository.save(tx);
             log.info("✅ Transaction saved successfully for phone: {}", phoneNumber);
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("📞 Callback processed in {} ms for {}", elapsed, stk.getCheckoutRequestID());
         } else {
             log.warn("⚠️ Failed transaction: {}", stk.getResultDesc());
         }

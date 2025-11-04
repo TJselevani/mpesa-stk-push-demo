@@ -28,3 +28,12 @@ mpesa:
   passKey: bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
   callbackUrl: https://capital-obviously-terrier.ngrok-free.app/api/mpesa/callback
   environment: sandbox
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
