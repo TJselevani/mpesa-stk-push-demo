@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class MpesaController {
 
     @Autowired
-    private MpesaServiceV2 mpesaService;
+    private MpesaService mpesaService;
 
     @Autowired
     private TransactionService transactionService;

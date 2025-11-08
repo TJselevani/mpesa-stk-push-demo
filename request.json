@@ -1,0 +1,13 @@
+{
+  "phoneNumber": "254712345678",
+  "accountReference": "TestAccount",
+  "description": "Load test",
+  "amount": 1
+}
+//ab -n 200 -c 50 -p request.json -T application/json http://localhost:8080/api/mpesa/pay
+//
+//for ($i=0; $i -lt 200; $i++) {
+//curl -X POST http://localhost:8080/api/mpesa/pay `
+//-H "Content-Type: application/json" `
+//-d "@request.json"
+//}

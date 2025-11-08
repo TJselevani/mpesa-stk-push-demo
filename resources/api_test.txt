@@ -15,3 +15,6 @@ Expected Response
   "responseDescription": "Success. Request accepted for processing",
   "responseCode": "0"
 }
+
+
+ngrok http --url=capital-obviously-terrier.ngrok-free.app 8080
