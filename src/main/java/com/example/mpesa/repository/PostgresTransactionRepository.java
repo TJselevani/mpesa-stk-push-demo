@@ -9,10 +9,10 @@ import java.util.List;
 @Repository
 public interface PostgresTransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("{ 'amount' : { $gt: ?0 } }")
-    List<Transaction> findTransactionsWithAmountGreaterThan(double amount);
-
-    @Query("{ 'phoneNumber' : ?0 }")
-    List<Transaction> findByPhoneNumber(String phoneNumber);
+//    @Query("{ 'amount' : { $gt: ?0 } }")
+//    List<Transaction> findTransactionsWithAmountGreaterThan(double amount);
+//
+//    @Query("{ 'phoneNumber' : ?0 }")
+//    List<Transaction> findByPhoneNumber(String phoneNumber);
 }
 

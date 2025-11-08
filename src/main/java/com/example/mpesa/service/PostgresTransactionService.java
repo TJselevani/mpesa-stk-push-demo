@@ -48,6 +48,7 @@ public class PostgresTransactionService {
                     .resultDesc(stk.getResultDesc())
                     .resultCode(stk.getResultCode())
                     .createdAt(LocalDateTime.now())
+                    .status(stk.getResultCode() == 0 ? "SUCCESS" : "FAILED")
                     .build();
 
             transactionRepository.save(tx);

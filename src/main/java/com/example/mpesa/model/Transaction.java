@@ -26,4 +26,5 @@ public class Transaction {
     private int resultCode;
 
     private LocalDateTime createdAt;
+    private String status;
 }
