@@ -1,6 +1,9 @@
 spring:
   application:
     name: mpesa-stk-push-demo
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/mpesa_stk_demo}
 
   datasource:
     url: jdbc:postgresql://localhost:5432/mpesa_db

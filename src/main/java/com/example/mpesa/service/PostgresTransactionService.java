@@ -2,7 +2,7 @@ package com.example.mpesa.service;
 
 import com.example.mpesa.dto.StkCallback;
 import com.example.mpesa.entity.Transaction;
-import com.example.mpesa.repository.TransactionRepository;
+import com.example.mpesa.repository.PostgresTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TransactionService {
+public class PostgresTransactionService {
 
-    private final TransactionRepository transactionRepository;
+    private final PostgresTransactionRepository transactionRepository;
 
     public void handleCallback(StkCallback callback) {
         long start = System.currentTimeMillis();

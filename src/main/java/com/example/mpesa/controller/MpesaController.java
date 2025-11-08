@@ -3,7 +3,8 @@ package com.example.mpesa.controller;
 import com.example.mpesa.dto.*;
 import com.example.mpesa.service.MpesaService;
 import com.example.mpesa.service.MpesaServiceV2;
-import com.example.mpesa.service.TransactionService;
+import com.example.mpesa.service.MongoTransactionService;
+import com.example.mpesa.service.PostgresTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,10 @@ public class MpesaController {
     private MpesaService mpesaService;
 
     @Autowired
-    private TransactionService transactionService;
+    private MongoTransactionService transactionService;
+
+    @Autowired
+    private PostgresTransactionService transactionService2;
 
     @PostMapping("/stkpush")
     public StkPushResponse stkPush(@RequestBody StkPushRequest request) {
